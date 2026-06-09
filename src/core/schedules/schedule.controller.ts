@@ -39,6 +39,11 @@ export class ScheduleController {
     return this.scheduleService.findAllByProgramBetweenDates(query);
   }
 
+  @MessagePattern({ cmd: 'find_schedules_by_instructor_between_dates' })
+  findAllByInstructorBetweenDates(@Payload() query: TemporalSearchQueryDto) {
+    return this.scheduleService.findAllByInstructorBetweenDates(query);
+  }
+
   @MessagePattern({ cmd: 'update_schedule' })
   update(
     @Payload()

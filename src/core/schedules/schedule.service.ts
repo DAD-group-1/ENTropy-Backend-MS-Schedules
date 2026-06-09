@@ -45,7 +45,7 @@ export class ScheduleService {
     const skip = (page - 1) * limit;
 
     const [data, total] = await this.scheduleRepository.findAndCount({
-      relations: { instructor: true },
+      relations: { instructor: true, course: true },
       skip,
       take: limit,
       order: { id: 'DESC' },
@@ -75,7 +75,7 @@ export class ScheduleService {
     const skip = (page - 1) * limit;
 
     const [data] = await this.scheduleRepository.findAndCount({
-      relations: { instructor: true },
+      relations: { instructor: true, course: true },
       skip,
       take: limit,
       order: { id: 'DESC' },
@@ -85,16 +85,28 @@ export class ScheduleService {
     return data;
   }
 
-  formatDate = (date: Date) =>
-    date.toISOString().replace('T', ' ').replace('Z', '');
-
   async findAllByProgramBetweenDates(query: TemporalSearchQueryDto) {
     const startDate = new Date(query.startDate);
     const endDate = new Date(query.endDate);
     const results = await this.scheduleRepository.find({
       order: { id: 'DESC' },
+      relations: { course: true },
       where: {
         course: { program_id: query.id },
+        start_date: MoreThanOrEqual(startDate),
+        end_date: LessThanOrEqual(endDate),
+      },
+    });
+    return results;
+  }
+
+  async findAllByInstructorBetweenDates(query: TemporalSearchQueryDto) {
+    const startDate = new Date(query.startDate);
+    const endDate = new Date(query.endDate);
+    const results = await this.scheduleRepository.find({
+      order: { id: 'DESC' },
+      where: {
+        instructor: { user_id: query.id },
         start_date: MoreThanOrEqual(startDate),
         end_date: LessThanOrEqual(endDate),
       },

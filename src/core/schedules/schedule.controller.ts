@@ -4,6 +4,8 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import {
   CreateScheduleRequestDto,
   PaginationQueryDto,
+  SearchPaginationQueryDto,
+  TemporalSearchQueryDto,
   UpdateScheduleRequestDto,
 } from '@dad-group-1/backend-common';
 
@@ -25,6 +27,16 @@ export class ScheduleController {
   @MessagePattern({ cmd: 'find_one_schedule' })
   findOne(@Payload() id: number) {
     return this.scheduleService.findOne(id);
+  }
+
+  @MessagePattern({ cmd: 'find_schedules_by_program' })
+  findAllByProgram(@Payload() query: SearchPaginationQueryDto) {
+    return this.scheduleService.findAllByProgram(query);
+  }
+
+  @MessagePattern({ cmd: 'find_schedules_by_program_between_dates' })
+  findAllBetweenDates(@Payload() query: TemporalSearchQueryDto) {
+    return this.scheduleService.findAllByProgramBetweenDates(query);
   }
 
   @MessagePattern({ cmd: 'update_schedule' })

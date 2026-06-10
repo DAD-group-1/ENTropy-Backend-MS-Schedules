@@ -14,6 +14,7 @@ import { Room } from '../external/entities/room.entity';
 import { RoomType } from '../external/entities/room-type.entity';
 import { Specialization } from '../external/entities/specialization.entity';
 import { Department } from '../external/entities/department.entity';
+import { Role } from '../external/entities/role.entity';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { Department } from '../external/entities/department.entity';
       RoomType,
       Specialization,
       Department,
+      Role,
     ]),
   ],
   controllers: [ScheduleController],

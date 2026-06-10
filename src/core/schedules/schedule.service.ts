@@ -45,7 +45,11 @@ export class ScheduleService {
     const skip = (page - 1) * limit;
 
     const [data, total] = await this.scheduleRepository.findAndCount({
-      relations: { instructor: true, course: true },
+      relations: {
+        course: true,
+        instructor: { user: { campus: false, role: false } },
+        room: true,
+      },
       skip,
       take: limit,
       order: { id: 'DESC' },
@@ -57,7 +61,11 @@ export class ScheduleService {
   async findOne(id: number): Promise<ScheduleResponseDto | null> {
     const schedule = await this.scheduleRepository.findOne({
       where: { id: id },
-      relations: { instructor: true },
+      relations: {
+        course: true,
+        instructor: { user: { campus: false, role: false } },
+        room: true,
+      },
     });
 
     if (!schedule) {
@@ -75,7 +83,11 @@ export class ScheduleService {
     const skip = (page - 1) * limit;
 
     const [data] = await this.scheduleRepository.findAndCount({
-      relations: { instructor: true, course: true },
+      relations: {
+        course: true,
+        instructor: { user: { campus: false, role: false } },
+        room: true,
+      },
       skip,
       take: limit,
       order: { id: 'DESC' },
@@ -90,7 +102,11 @@ export class ScheduleService {
     const endDate = new Date(query.endDate);
     const results = await this.scheduleRepository.find({
       order: { id: 'DESC' },
-      relations: { course: true },
+      relations: {
+        course: true,
+        instructor: { user: { campus: false, role: false } },
+        room: true,
+      },
       where: {
         course: { program_id: query.id },
         start_date: MoreThanOrEqual(startDate),
@@ -104,6 +120,11 @@ export class ScheduleService {
     const startDate = new Date(query.startDate);
     const endDate = new Date(query.endDate);
     const results = await this.scheduleRepository.find({
+      relations: {
+        course: true,
+        instructor: { user: { campus: false, role: false } },
+        room: true,
+      },
       order: { id: 'DESC' },
       where: {
         instructor: { user_id: query.id },

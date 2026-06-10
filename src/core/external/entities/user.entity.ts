@@ -1,7 +1,8 @@
-import { Entity, ManyToOne, OneToOne } from 'typeorm';
+import { Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { InternalUser } from '@dad-group-1/backend-common';
 import { Instructor } from './instructor.entity';
 import { Campus } from './campus.entity';
+import { Role } from './role.entity';
 
 @Entity()
 export class User extends InternalUser {
@@ -9,4 +10,7 @@ export class User extends InternalUser {
   instructor: Instructor;
   @ManyToOne(() => Campus, (campus) => campus.users)
   campus: Campus;
+  @ManyToOne(() => Role, (role) => role.users)
+  @JoinColumn({ name: 'role_id' })
+  role: Role;
 }

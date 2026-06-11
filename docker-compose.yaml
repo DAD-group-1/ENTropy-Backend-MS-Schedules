@@ -1,8 +1,8 @@
 services:
-  entropy-backend-ms-attendances:
+  entropy-backend-ms-schedules:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: entropy_backend_ms_attendances
+    container_name: entropy_backend_ms_schedules
     ports:
       - '3007:3007'
